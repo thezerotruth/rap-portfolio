@@ -1,4 +1,61 @@
 import streamlit as st
+
+def apply_custom_theme():
+    st.markdown("""
+        <style>
+        /* 1. Main Background & Text */
+        .stApp {
+            background-color: #0E1117; /* Deep charcoal */
+            color: #FFFFFF;
+        }
+
+        /* 2. Sidebar Customization */
+        [data-testid="stSidebar"] {
+            background-color: #161B22;
+            border-right: 1px solid #30363D;
+        }
+
+        /* 3. Card/Bento Grid Style for Sections */
+        div.stBlock {
+            background-color: #1C2128;
+            border: 1px solid #30363D;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+        div.stBlock:hover {
+            border-color: #10B981; /* Teal accent on hover */
+            transform: translateY(-2px);
+        }
+
+        /* 4. Electric Blue/Teal Buttons */
+        .stButton>button {
+            background: linear-gradient(90deg, #10B981 0%, #3B82F6 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            width: 100%;
+        }
+        .stButton>button:hover {
+            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
+        }
+
+        /* 5. Headers & Inputs */
+        h1, h2, h3 {
+            color: #3B82F6; /* Electric blue headers */
+        }
+        .stTextInput>div>div>input {
+            background-color: #0D1117;
+            border: 1px solid #30363D;
+            color: white;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+apply_custom_theme()
+import streamlit as st
 import os
 from dotenv import load_dotenv
 from langchain_chroma import Chroma

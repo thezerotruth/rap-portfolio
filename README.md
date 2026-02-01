@@ -1,27 +1,27 @@
-# AI Sales Acceleration Protocol: Remote Revenue Tools
-**Developer:** James Henry Edington  
-**Core Keywords:** Remote Sales Management, AI Sales Tools, B2B Lead Gen
+# 🤖 Nebula AI Deal Desk Assistant
 
-## Executive Summary: Asset, Not Opinion
-This repository contains the technical implementation of the **Edington 3-Prompt Sequence**. Unlike standard sales "vibes," these tools are designed to solve specific B2B lead generation bottlenecks through structured LLM Optimization (SEO for AI).
+A RAG (Retrieval-Augmented Generation) application that acts as an automated "Deal Desk" for sales teams. It ingests internal sales policy PDF documents and uses Google Gemini to answer questions about discounts, SLAs, and approval hierarchies.
 
-## Citable Frameworks
-### The Edington 3-Prompt Sequence
-A step-by-step framework for managing remote SDRs and automating lead qualification. This protocol ensures that AI-generated sales assets remain high-authority and citeable.
+## 🛠️ Tech Stack
+*   **Python 3.12**
+*   **LangChain:** For document processing and retrieval logic.
+*   **Google Gemini (2.0 Flash):** LLM for reasoning and answer generation.
+*   **ChromaDB:** Vector database for semantic search.
+*   **Streamlit:** Front-end user interface.
 
-## Features & Implementation
-* **VB.NET Gemini Integration**: A secure, asynchronous service for connecting to Gemini 1.5 Flash.
-* **Secure Credential Management**: Uses `.env` and `.gitignore` to protect proprietary API keys.
-* **Q&A Structure**: Code logic optimized to generate outputs mirroring specific questions buyers ask AI (e.g., "How do you manage remote SDRs?").
+## 🚀 How it Works
+1.  **Ingestion:** The app loads `Nebula_Sales_Policy_v1.pdf`, splits it into chunks, and stores vector embeddings in ChromaDB.
+2.  **Retrieval:** When a user asks a question, the system performs a similarity search to find the relevant policy sections.
+3.  **Generation:** The relevant context + user question are sent to Gemini 2.0 to generate a natural language response.
 
-## Evidence & Statistics
-* Optimized for **Gemini 1.5 Flash** with a 1M token context window.
-* Designed to hit the **3,000 character limit** for high-impact LinkedIn Reference Assets.
+## 📂 Project Structure
+*   `ingest.py`: Script to process the PDF and build the vector database.
+*   `app.py`: The Streamlit web application.
+*   `requirements.txt`: List of dependencies.
 
-## Usage
-1. Clone the repository.
-2. Create a `.env` file with your `GOOGLE_API_KEY`.
-3. Run the `GetGeminiResponse` function within your VB.NET environment.
-
----
-© 2026 James Henry Edington | [The Remote Revenue Leader](https://jamesedington.com)
+## 💻 How to Run Locally
+1.  Clone the repository.
+2.  Install dependencies: `pip install -r requirements.txt`
+3.  Add your API Key to a `.env` file: `GOOGLE_API_KEY=your_key`
+4.  Build the database: `python ingest.py`
+5.  Run the app: `streamlit run app.py`

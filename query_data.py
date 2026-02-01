@@ -1,12 +1,12 @@
 import os
-import sys
 from dotenv import load_dotenv
+
+# Import Google & Database tools
 from langchain_chroma import Chroma
 from langchain_google_genai import GoogleGenerativeAIEmbeddings, ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 
-# Import Google & Database tools
-
+# Load environment variables
 load_dotenv()
 
 PROMPT_TEMPLATE = """
@@ -20,51 +20,36 @@ Answer the question based on the above context: {question}
 """
 
 def main():
-    try:
-        # Get question from CLI arg or prompt
-        if len(sys.argv) > 1:
-            query_text = " ".join(sys.argv[1:])
-        else:
-            print("🤖 Ask me a question about the Nebula Policy:")
-            query_text = input("Question: ").strip()
-        if not query_text:
-            print("No question provided. Exiting.")
-            return
+    # 1. Ask the user for a question
+    print("🤖 Ask me a question about the Nebula Policy:")
+    query_text = input("Question: ")
 
-        # Prepare DB
-        embedding_model = os.getenv("EMBEDDING_MODEL", "models/embedding-001")
-        chroma_dir = os.getenv("CHROMA_DIR", "./chroma_db")
-        embedding_function = GoogleGenerativeAIEmbeddings(model=embedding_model)
-        db = Chroma(persist_directory=chroma_dir, embedding_function=embedding_function)
+    # 2. Prepare the DB
+    # (Your embedding model is working fine, so we keep this)
+    embedding_function = GoogleGenerativeAIEmbeddings(model="models/embedding-001")
+    db = Chroma(persist_directory="./chroma_db", embedding_function=embedding_function)
 
-        # Search the DB
-        print("🔍 Searching documents...")
-        results = db.similarity_search_with_score(query_text, k=5)
-        if not results:
-            print("No relevant documents found.")
-            return
+    # 3. Search the DB
+    print("🔍 Searching documents...")
+    results = db.similarity_search_with_score(query_text, k=5)
 
-        context_text = "\n\n---\n\n".join([doc.page_content for doc, _ in results])
+    # Combine results
+    context_text = "\n\n---\n\n".join([doc.page_content for doc, _score in results])
 
-        # Build prompt and call model
-        prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-        prompt = prompt_template.format(context=context_text, question=query_text)
+    # 4. Ask the AI
+    # UPDATED: Using "gemini-2.0-flash" which we confirmed you have access to
+    prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
+    prompt = prompt_template.format(context=context_text, question=query_text)
 
-        print("🧠 Thinking...")
-        model_name = os.getenv("LLM_MODEL", "gemini-pro")
-        model = ChatGoogleGenerativeAI(model=model_name)
-        response = model.invoke(prompt)
+    print("🧠 Thinking...")
+    model = ChatGoogleGenerativeAI(model="gemini-2.0-flash")
+    response = model.invoke(prompt)
 
-        # Show answer
-        print("\n" + "=" * 50)
-        print("ANSWER:")
-        # response may be an object with .content or a string
-        answer = getattr(response, "content", response)
-        print(answer)
-        print("=" * 50)
-
-    except Exception as e:
-        print(f"Error: {e}")
+    # 5. Show Answer
+    print("\n" + "="*50)
+    print("ANSWER:")
+    print(response.content)
+    print("="*50)
 
 if __name__ == "__main__":
     main()

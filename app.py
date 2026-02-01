@@ -1,60 +1,44 @@
 import streamlit as st
 
-def apply_custom_theme():
+# MUST BE THE FIRST STREAMLIT COMMAND
+st.set_page_config(page_title="Remote Revenue Leader", layout="wide")
+
+def force_custom_theme():
     st.markdown("""
         <style>
-        /* 1. Main Background & Text */
-        .stApp {
-            background-color: #0E1117; /* Deep charcoal */
-            color: #FFFFFF;
+        /* Force background on the root and app container */
+        .stApp, [data-testid="stAppViewContainer"] {
+            background-color: #0E1117 !important;
         }
 
-        /* 2. Sidebar Customization */
+        /* Target headers specifically by their Streamlit ID class */
+        [data-testid="stHeader"], .st-emotion-cache-10trblm {
+            background-color: rgba(0,0,0,0) !important;
+            color: #3B82F6 !important;
+        }
+
+        /* Force button gradient */
+        button[kind="primary"], .stButton>button {
+            background: linear-gradient(90deg, #10B981 0%, #3B82F6 100%) !important;
+            color: white !important;
+            border: none !important;
+            box-shadow: 0 4px 14px 0 rgba(16, 185, 129, 0.39) !important;
+        }
+
+        /* Target sidebar specifically */
         [data-testid="stSidebar"] {
-            background-color: #161B22;
-            border-right: 1px solid #30363D;
+            background-color: #161B22 !important;
+            border-right: 1px solid #30363D !important;
         }
-
-        /* 3. Card/Bento Grid Style for Sections */
-        div.stBlock {
-            background-color: #1C2128;
-            border: 1px solid #30363D;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.2s ease;
-        }
-        div.stBlock:hover {
-            border-color: #10B981; /* Teal accent on hover */
-            transform: translateY(-2px);
-        }
-
-        /* 4. Electric Blue/Teal Buttons */
-        .stButton>button {
-            background: linear-gradient(90deg, #10B981 0%, #3B82F6 100%);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            width: 100%;
-        }
-        .stButton>button:hover {
-            box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);
-        }
-
-        /* 5. Headers & Inputs */
-        h1, h2, h3 {
-            color: #3B82F6; /* Electric blue headers */
-        }
-        .stTextInput>div>div>input {
-            background-color: #0D1117;
-            border: 1px solid #30363D;
-            color: white;
+        
+        /* Fix for text color in deep dark mode */
+        p, span, label {
+            color: #E6EDF3 !important;
         }
         </style>
         """, unsafe_allow_html=True)
 
-apply_custom_theme()
+force_custom_theme()
 import streamlit as st
 import os
 from dotenv import load_dotenv
